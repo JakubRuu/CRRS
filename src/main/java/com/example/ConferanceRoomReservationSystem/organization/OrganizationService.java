@@ -24,13 +24,15 @@ class OrganizationService {
     }
 
     Organization deleteOrganization(String name) {
-        Organization organization1 = organizationRepository.findById(name).orElseThrow(() -> new NoSuchElementException(""));
+        Organization organization1 = organizationRepository.findById(name)
+                .orElseThrow(() -> new NoSuchElementException(""));
+        organizationRepository.deleteById(name);
         return organization1;
     }
 
     Organization updateOrganization(String name, Organization organization) {
         Organization organizationToUpdate = organizationRepository.
-                findById(organization.getName()).
+                findById(name).
                 orElseThrow(() -> new NoSuchElementException(""));
         if (organization.getDescription() != null) {
             organizationToUpdate.setDescription(organization.getDescription());
