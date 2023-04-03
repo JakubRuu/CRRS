@@ -1,5 +1,6 @@
 package com.example.ConferanceRoomReservationSystem.organization;
 
+import com.example.ConferanceRoomReservationSystem.SortType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -22,8 +23,13 @@ class OrganizationController {
     }
 
     @GetMapping
-    List<Organization> getAll() {
-        return organizationService.getAllOrganizations();
+    List<Organization> getAll(@RequestParam(defaultValue = "ASC") SortType sortType) {
+        return organizationService.getAllOrganizations(sortType);
+    }
+
+    @GetMapping("/{name}")
+    Organization getById(@PathVariable String name) {
+        return organizationService.getOrganization(name);
     }
 
     @PostMapping
@@ -59,7 +65,7 @@ class OrganizationController {
     }
 
     @ExceptionHandler(value = IllegalArgumentException.class)
-    ResponseEntity<Object> handlerNoSuchArgumentException(IllegalArgumentException e) {
+    ResponseEntity<Object> handlerIllegalArgumentException(IllegalArgumentException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

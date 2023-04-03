@@ -1,6 +1,8 @@
 package com.example.ConferanceRoomReservationSystem.organization;
 
+import com.example.ConferanceRoomReservationSystem.SortType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,11 +17,19 @@ class OrganizationService {
         this.organizationRepository = organizationRepository;
     }
 
-    List<Organization> getAllOrganizations() {
-        return organizationRepository.findAll();
+    List<Organization> getAllOrganizations(SortType sortType) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortType.name()), "name");
+        return organizationRepository.findAll(sort);
+    }
+
+    Organization getOrganization(String name) {
+        return organizationRepository.findById(name).orElseThrow(() -> new NoSuchElementException("No organization exists!"));
     }
 
     Organization addOrganization(Organization organization) {
+        organizationRepository.findById(organization.getName()).ifPresent(o -> {
+            throw new IllegalArgumentException("Organization already exists!");
+        });
         return organizationRepository.save(organization);
     }
 
