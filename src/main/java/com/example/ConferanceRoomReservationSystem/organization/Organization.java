@@ -19,7 +19,7 @@ interface UpdateOrganization {
 
 public class Organization {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long id;
     @Size(min = 2, max = 20, groups = {AddOrganization.class, UpdateOrganization.class})
     @NotBlank(groups = AddOrganization.class)
@@ -85,26 +85,5 @@ public class Organization {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return "Organization{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Organization that = (Organization) o;
-        return Objects.equals(name, that.name) && Objects.equals(description, that.description);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, description);
     }
 }

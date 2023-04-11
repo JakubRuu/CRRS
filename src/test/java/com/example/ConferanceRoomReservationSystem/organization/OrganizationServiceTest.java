@@ -66,7 +66,7 @@ class OrganizationServiceTest {
         //given
         String name = "Intive";
         Organization arg = new Organization("Intive", "IT company");
-        Mockito.when(organizationRepository.findById(name)).thenReturn(Optional.of(arg));
+        Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.of(arg));
         //when
         //then
         assertThrows(IllegalArgumentException.class, () -> {
@@ -79,7 +79,7 @@ class OrganizationServiceTest {
         //given
         String name = "Intive";
         Organization arg = new Organization(name, "IT company");
-        Mockito.when(organizationRepository.findById(name)).thenReturn(Optional.empty());
+        Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.empty());
         Mockito.when(organizationRepository.save(arg)).thenReturn(arg);
         //when
         Organization result = organizationService.addOrganization(arg);
@@ -92,13 +92,14 @@ class OrganizationServiceTest {
     void when_delete_existing_organization_then_it_should_be_removed_from_the_repo() {
         //given
         String name = "Intive";
-        Organization arg = new Organization(name, "IT company");
-        Mockito.when(organizationRepository.findById(name)).thenReturn(Optional.of(arg));
+        Long id = 1L;
+        Organization arg = new Organization(id, name, "IT company");
+        Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.of(arg));
         //when
         Organization result = organizationService.deleteOrganization(name);
         //then
         assertEquals(arg, result);
-        Mockito.verify(organizationRepository).deleteById(name);
+        Mockito.verify(organizationRepository).deleteById(id);
 
     }
 
@@ -106,7 +107,7 @@ class OrganizationServiceTest {
     void when_delete_non_exsiting_organization_then_exception_should_be_thrown() {
         //given
         String name = "Intive";
-        Mockito.when(organizationRepository.findById(name)).thenReturn(Optional.empty());
+        Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.empty());
         //when
         //then
         assertThrows(NoSuchElementException.class, () -> {
@@ -119,7 +120,7 @@ class OrganizationServiceTest {
         //given
         String name = "Intive";
         Organization arg = new Organization(name, "IT company");
-        Mockito.when(organizationRepository.findById(name)).thenReturn(Optional.empty());
+        Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.empty());
         //when
         //then
         assertThrows(NoSuchElementException.class, () -> {
@@ -133,7 +134,7 @@ class OrganizationServiceTest {
         String name = "Intive";
         Organization orgToUpdate = new Organization(name, "IT company");
         Organization arg = new Organization(name, "IT company");
-        Mockito.when(organizationRepository.findById(name)).thenReturn(Optional.of(arg));
+        Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.of(arg));
         Mockito.when(organizationRepository.save(orgToUpdate)).thenReturn(orgToUpdate);
         //when
         Organization result = organizationService.updateOrganization(name, orgToUpdate);
@@ -147,12 +148,12 @@ class OrganizationServiceTest {
         //given
         String name = "Intive";
         Organization arg = new Organization(name, "IT company");
-        Mockito.when(organizationRepository.findById(name)).thenReturn(Optional.of(arg));
+        Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.of(arg));
         //when
         Organization result = organizationService.getOrganization(name);
         //then
         assertEquals(arg, result);
-        Mockito.verify(organizationRepository).findById(name);
+        Mockito.verify(organizationRepository).findByName(name);
     }
 
     @Test
@@ -162,7 +163,7 @@ class OrganizationServiceTest {
         Organization orgToUpdate = new Organization(null, "Delivery company");
         Organization arg = new Organization(name, "IT company");
         Organization expectedOrg = new Organization(name, "Delivery company");
-        Mockito.when(organizationRepository.findById(name)).thenReturn(Optional.of(arg));
+        Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.of(arg));
         Mockito.when(organizationRepository.save(arg)).thenReturn(expectedOrg);
         //when
         Organization result = organizationService.updateOrganization(name, orgToUpdate);
@@ -181,7 +182,7 @@ class OrganizationServiceTest {
     ) {
         //given
 
-        Mockito.when(organizationRepository.findById(name)).thenReturn(Optional.of(arg1));
+        Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.of(arg1));
         Mockito.when(organizationRepository.save(arg1)).thenReturn(arg3);
         //when
         Organization result = organizationService.updateOrganization(name, arg2);
