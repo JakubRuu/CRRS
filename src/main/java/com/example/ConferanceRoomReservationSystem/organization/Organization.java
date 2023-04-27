@@ -1,12 +1,15 @@
 package com.example.ConferanceRoomReservationSystem.organization;
 
 
+import com.example.ConferanceRoomReservationSystem.conferanceRoom.ConferenceRoom;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Objects;
 
 interface AddOrganization {
@@ -26,6 +29,8 @@ public class Organization {
     private String name;
 
     private String description;
+    @OneToMany(mappedBy = "organization")
+    private List<ConferenceRoom> conferenceRooms;
 
     public Organization() {
     }

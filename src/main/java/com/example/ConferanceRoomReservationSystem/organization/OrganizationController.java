@@ -62,9 +62,10 @@ class OrganizationController {
                 errors
         ), HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(value = NoSuchElementException.class)
     ResponseEntity<Error<String>> handlerNoSuchElementException(NoSuchElementException e) {
-        return new ResponseEntity<>( new Error<>(HttpStatus.NOT_FOUND.value(),
+        return new ResponseEntity<>(new Error<>(HttpStatus.NOT_FOUND.value(),
                 HttpStatus.NOT_FOUND.getReasonPhrase(),
                 e.getMessage()), HttpStatus.NOT_FOUND);
     }
