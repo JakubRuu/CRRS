@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -62,10 +63,10 @@ class OrganizationControllerTest {
     }
 
     @Test
-    void when_already_existing_organization_then_exception_should_be_thrown() throws Exception {
+    void when_add_already_existing_organization_then_exception_should_be_thrown() throws Exception {
         //given
         Organization organization = new Organization("Intive", "IT company");
-        Mockito.when(organizationService.addOrganization(organization)).thenThrow(new IllegalArgumentException("organization already"));
+        Mockito.when(organizationService.addOrganization(organization)).thenThrow(new IllegalArgumentException("organization already exists!"));
         //when
         //then
         mockMvc.perform(MockMvcRequestBuilders.post("/organizations")
@@ -79,7 +80,10 @@ class OrganizationControllerTest {
                                         """
                         )
                 ).andExpect(MockMvcResultMatchers.status().is4xxClientError())
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code", equalTo(400)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message", equalTo("Bad Request")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.details", equalTo("organization already exists!")));
     }
 
     @Test
@@ -92,7 +96,10 @@ class OrganizationControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete("/organizations/" + name)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code", equalTo(404)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message", equalTo("Not Found")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.details", equalTo("No organization found")));
 
 
     }
@@ -113,7 +120,7 @@ class OrganizationControllerTest {
     }
 
     @Test
-    void when_add_ivalid_organization_then_exception_should_be_saved() throws Exception {
+    void when_add_all_ivalid_organization_then_exception_should_be_saved() throws Exception {
         //given
         //when
         //then
@@ -129,12 +136,14 @@ class OrganizationControllerTest {
                         )
                 ).andExpect(MockMvcResultMatchers.status().is4xxClientError())
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name", equalTo("size must be between 2 and 20")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code", equalTo(400)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message", equalTo("Bad Request")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.details.name[0]", equalTo("size must be between 2 and 20")));;
     }
 
     @ParameterizedTest
     @ArgumentsSource(ValidationAddOrganizationArgumentProvider.class)
-    void when_add_ivalid_organization_arg1_then_exception_should_be_thrown_with_arg2_details(String arg1, String arg2) throws Exception {
+    void when_add_ivalid_organization_arg1_then_exception_should_be_thrown_with_arg2_details(String arg1, List<String> arg2) throws Exception {
         //given
         //when
         //then
@@ -143,7 +152,9 @@ class OrganizationControllerTest {
                         .content(arg1)
                 ).andExpect(MockMvcResultMatchers.status().is4xxClientError())
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name", equalTo(arg2)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code", equalTo(400)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message", equalTo("Bad Request")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.details.name", equalTo(arg2)));;
     }
 
     @Test
@@ -166,7 +177,10 @@ class OrganizationControllerTest {
                         )
                 )
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code", equalTo(404)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message", equalTo("Not Found")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.details", equalTo("No organization found")));
 
     }
 
@@ -248,7 +262,7 @@ class OrganizationControllerTest {
 
     @ParameterizedTest
     @ArgumentsSource(ValidationUpdateOrganizationArgumentProvider.class)
-    void when_update_organization_arg1_then_validation_should_happen(String arg1, boolean result, String arg2) throws Exception {
+    void when_update_organization_arg1_then_validation_should_happen(String arg1, boolean result,List<String> arg2) throws Exception {
         //given
         String existingOrgName = "Tietio";
         //when
@@ -262,7 +276,9 @@ class OrganizationControllerTest {
         } else {
             resultActions.andExpect(MockMvcResultMatchers.status().is4xxClientError())
                     .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.name", equalTo(arg2)));
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.code", equalTo(400)))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.message", equalTo("Bad Request")))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.details.name", equalTo(arg2)));
         }
     }
 }
