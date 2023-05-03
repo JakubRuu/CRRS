@@ -20,7 +20,7 @@ class ConferenceRoomController {
     }
 
     @PostMapping
-    ConferenceRoom add(@Validated(AddConferenceRoom.class) @RequestBody ConferenceRoom conferenceRoom) {
+    ConferenceRoomDTO add(@Validated(AddConferenceRoom.class) @RequestBody ConferenceRoom conferenceRoom) {
         return conferenceRoomService.addConferenceRoom(conferenceRoom);
     }
 

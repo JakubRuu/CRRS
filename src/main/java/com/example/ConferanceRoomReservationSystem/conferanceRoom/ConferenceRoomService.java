@@ -13,19 +13,24 @@ class ConferenceRoomService {
     private final ConferenceRoomRepository conferenceRoomRepository;
     private final OrganizationRepository organizationRepository;
     private final ConferenceRoomUpdator conferenceRoomUpdator;
+    private final ConferenceRoomTransformer conferenceRoomTransformer;
 
     @Autowired
-    public ConferenceRoomService(ConferenceRoomRepository conferenceRoomRepository, OrganizationRepository organizationRepository, ConferenceRoomUpdator conferenceRoomUpdator) {
+    public ConferenceRoomService(ConferenceRoomRepository conferenceRoomRepository,
+                                 OrganizationRepository organizationRepository,
+                                 ConferenceRoomUpdator conferenceRoomUpdator,
+                                 ConferenceRoomTransformer conferenceRoomTransformer) {
         this.conferenceRoomRepository = conferenceRoomRepository;
         this.organizationRepository = organizationRepository;
         this.conferenceRoomUpdator = conferenceRoomUpdator;
+        this.conferenceRoomTransformer=conferenceRoomTransformer;
     }
 
     List<ConferenceRoom> getAllConferenceRooms() {
         return conferenceRoomRepository.findAll();
     }
 
-    ConferenceRoom addConferenceRoom(ConferenceRoom conferenceRoom) {
+    ConferenceRoomDTO addConferenceRoom(ConferenceRoom conferenceRoom) {
         String organizationName = conferenceRoom.getOrganization().getName();
         Organization organizationFromRepo = organizationRepository.findByName(organizationName)
                 .orElseThrow(() -> {
@@ -36,7 +41,7 @@ class ConferenceRoomService {
                 .ifPresent(cr -> {
                     throw new IllegalArgumentException("Conference room already exists!");
                 });
-        return conferenceRoomRepository.save(conferenceRoom);
+        return conferenceRoomTransformer.toDto(conferenceRoomRepository.save(conferenceRoom));
     }
 
     ConferenceRoom deleteConferenceRoom(String id) {

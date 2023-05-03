@@ -46,12 +46,28 @@ public class Organization {
         this.description = description;
     }
 
+    public Organization(Long id, String name, String description, List<ConferenceRoom> conferenceRooms) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.conferenceRooms = conferenceRooms;
+    }
+
+    public List<ConferenceRoom> getConferenceRooms() {
+        return conferenceRooms;
+    }
+
+    public void setConferenceRooms(List<ConferenceRoom> conferenceRooms) {
+        this.conferenceRooms = conferenceRooms;
+    }
+
     @Override
     public String toString() {
         return "Organization{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", conferenceRooms=" + conferenceRooms +
                 '}';
     }
 
