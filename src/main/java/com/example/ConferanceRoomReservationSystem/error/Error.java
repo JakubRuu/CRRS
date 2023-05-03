@@ -1,4 +1,4 @@
-package com.example.ConferanceRoomReservationSystem;
+package com.example.ConferanceRoomReservationSystem.error;
 
 public class Error<T> {
     private int code;

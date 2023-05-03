@@ -40,7 +40,7 @@ public class ConferenceRoom {
     private boolean isAvailable;
     @NotNull(groups = AddConferenceRoom.class)
     @PositiveOrZero(groups = {AddConferenceRoom.class, UpdateConferenceRoom.class})
-    private Integer numOfSeats;
+    private int numOfSeats;
 
     @ManyToOne
     private Organization organization;
@@ -48,7 +48,7 @@ public class ConferenceRoom {
     ConferenceRoom() {
     }
 
-    public ConferenceRoom(String id, String name, String identifier, int level, boolean isAvailable, Integer numOfSeats, Organization organization) {
+    public ConferenceRoom(String id, String name, String identifier, int level, boolean isAvailable, int numOfSeats, Organization organization) {
         this.id = id;
         this.name = name;
         this.identifier = identifier;
@@ -58,7 +58,7 @@ public class ConferenceRoom {
         this.organization = organization;
     }
 
-    public ConferenceRoom(String name, String identifier, int level, boolean isAvailable, Integer numOfSeats, Organization organization) {
+    public ConferenceRoom(String name, String identifier, int level, boolean isAvailable, int numOfSeats, Organization organization) {
         this.name = name;
         this.identifier = identifier;
         this.level = level;
@@ -107,11 +107,11 @@ public class ConferenceRoom {
         isAvailable = available;
     }
 
-    public Integer getNumOfSeats() {
+    public int getNumOfSeats() {
         return numOfSeats;
     }
 
-    public void setNumOfSeats(Integer numOfSeats) {
+    public void setNumOfSeats(int numOfSeats) {
         this.numOfSeats = numOfSeats;
     }
 
@@ -122,6 +122,7 @@ public class ConferenceRoom {
     public void setOrganization(Organization organization) {
         this.organization = organization;
     }
+
 
     @Override
     public boolean equals(Object o) {
