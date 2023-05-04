@@ -22,12 +22,11 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(OrganizationController.class)
@@ -41,8 +40,8 @@ class OrganizationControllerTest {
     @Test
     void when_add_valid_organization_then_should_be_saved() throws Exception {
         //given
-        Organization organization = new Organization("Intive", "IT company");
-        Organization addedOrganization = new Organization(1L, "Intive", "IT company");
+        OrganizationDTO organization = new OrganizationDTO("Intive", "IT company");
+        OrganizationDTO addedOrganization = new OrganizationDTO(1L, "Intive", "IT company");
         Mockito.when(organizationService.addOrganization(organization)).thenReturn(addedOrganization);
 
         //when
@@ -65,7 +64,7 @@ class OrganizationControllerTest {
     @Test
     void when_add_already_existing_organization_then_exception_should_be_thrown() throws Exception {
         //given
-        Organization organization = new Organization("Intive", "IT company");
+        OrganizationDTO organization = new OrganizationDTO("Intive", "IT company");
         Mockito.when(organizationService.addOrganization(organization)).thenThrow(new IllegalArgumentException("organization already exists!"));
         //when
         //then
@@ -108,7 +107,7 @@ class OrganizationControllerTest {
     void when_delete_existing_organization_then_it_should_be_delteted() throws Exception {
         //given
         String name = "Intive";
-        Organization deletedOrganization = new Organization(1L, name, "IT company");
+        OrganizationDTO deletedOrganization = new OrganizationDTO(1L, name, "IT company");
         Mockito.when(organizationService.deleteOrganization("Intive")).thenReturn(deletedOrganization);
         //when
         //then
@@ -143,7 +142,7 @@ class OrganizationControllerTest {
 
     @ParameterizedTest
     @ArgumentsSource(ValidationAddOrganizationArgumentProvider.class)
-    void when_add_ivalid_organization_arg1_then_exception_should_be_thrown_with_arg2_details(String arg1, List<String> arg2) throws Exception {
+    void when_add_ivalid_organization_arg1_then_exception_should_be_thrown_with_arg2_details(String arg1, String[] arg2) throws Exception {
         //given
         //when
         //then
@@ -154,14 +153,14 @@ class OrganizationControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code", equalTo(400)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message", equalTo("Bad Request")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.details.name", equalTo(arg2)));;
+                .andExpect(MockMvcResultMatchers.jsonPath("$.details.name").value(containsInAnyOrder(arg2)));;
     }
 
     @Test
     void when_update_non_existing_organization_then_exception_should_be_thrown() throws Exception {
         //given
         String name = "Intive";
-        Organization organization = new Organization(name, "TEST");
+        OrganizationDTO organization = new OrganizationDTO(name, "TEST");
         Mockito.when(organizationService.updateOrganization(name, organization)).thenThrow(new NoSuchElementException("No organization found"));
         //then
         //when
@@ -188,8 +187,8 @@ class OrganizationControllerTest {
     void when_update_existing_organization_then_organization_should_be_update() throws Exception {
         //given
         String name = "Intive";
-        Organization organization = new Organization(name, "IT company");
-        Organization upOrganization = new Organization(1L, name, "IT company");
+        OrganizationDTO organization = new OrganizationDTO(name, "IT company");
+        OrganizationDTO upOrganization = new OrganizationDTO(1L, name, "IT company");
 
         Mockito.when(organizationService.updateOrganization(name, organization)).thenReturn(upOrganization);
 
@@ -227,8 +226,8 @@ class OrganizationControllerTest {
         ArgumentCaptor<SortType> sortArgumentCaptor = ArgumentCaptor.forClass(SortType.class);
         Mockito.when(organizationService.getAllOrganizations(SortType.ASC)).thenReturn(
                 Arrays.asList(
-                        new Organization("Intive", "IT company"),
-                        new Organization("Tieto", "Delivery company")
+                        new OrganizationDTO("Intive", "IT company"),
+                        new OrganizationDTO("Tieto", "Delivery company")
                 )
         );
         //when
@@ -247,8 +246,8 @@ class OrganizationControllerTest {
         ArgumentCaptor<SortType> sortArgumentCaptor = ArgumentCaptor.forClass(SortType.class);
         Mockito.when(organizationService.getAllOrganizations(arg2)).thenReturn(
                 Arrays.asList(
-                        new Organization("Intive", "IT company"),
-                        new Organization("Tieto", "Delivery company")
+                        new OrganizationDTO("Intive", "IT company"),
+                        new OrganizationDTO("Tieto", "Delivery company")
                 )
         );
         //when

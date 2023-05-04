@@ -8,6 +8,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/conferencerooms")
 class ConferenceRoomController {
+
+    private String id;
+    private String name;
+    private String identifier;
+    private int level;
+    private boolean isAvailable;
+    private int numOfSeats;
     private final ConferenceRoomService conferenceRoomService;
 
     public ConferenceRoomController(ConferenceRoomService conferenceRoomService) {
@@ -15,22 +22,22 @@ class ConferenceRoomController {
     }
 
     @GetMapping
-    List<ConferenceRoom> getAll() {
+    List<ConferenceRoomDTO> getAll() {
         return conferenceRoomService.getAllConferenceRooms();
     }
 
     @PostMapping
-    ConferenceRoomDTO add(@Validated(AddConferenceRoom.class) @RequestBody ConferenceRoom conferenceRoom) {
+    ConferenceRoomDTO add(@Validated(AddConferenceRoom.class) @RequestBody ConferenceRoomDTO conferenceRoom) {
         return conferenceRoomService.addConferenceRoom(conferenceRoom);
     }
 
     @DeleteMapping("/{id}")
-    ConferenceRoom delete(@PathVariable String id) {
+    ConferenceRoomDTO delete(@PathVariable String id) {
         return conferenceRoomService.deleteConferenceRoom(id);
     }
 
     @PutMapping("/{id}")
-    ConferenceRoom update(@PathVariable String id, @Validated (UpdateConferenceRoom.class) @RequestBody ConferenceRoom conferenceRoom) {
+    ConferenceRoomDTO update(@PathVariable String id, @Validated (UpdateConferenceRoom.class) @RequestBody ConferenceRoomDTO conferenceRoom) {
         return conferenceRoomService.updateConferenceRoom(id, conferenceRoom);
     }
 

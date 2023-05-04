@@ -16,27 +16,27 @@ class OrganizationController {
     }
 
     @GetMapping
-    List<Organization> getAll(@RequestParam(defaultValue = "ASC") SortType sortType) {
+    List<OrganizationDTO> getAll(@RequestParam(defaultValue = "ASC") SortType sortType) {
         return organizationService.getAllOrganizations(sortType);
     }
 
     @GetMapping("/{name}")
-    Organization getById(@PathVariable String name) {
+    OrganizationDTO getById(@PathVariable String name) {
         return organizationService.getOrganization(name);
     }
 
     @PostMapping
-    Organization add(@Validated(value = AddOrganization.class) @RequestBody Organization organization) {
+    OrganizationDTO add(@Validated(value = AddOrganization.class) @RequestBody OrganizationDTO organization) {
         return organizationService.addOrganization(organization);
     }
 
     @PutMapping("/{name}")
-    Organization update(@PathVariable String name, @Validated(value = UpdateOrganization.class) @RequestBody Organization organization) {
+    OrganizationDTO update(@PathVariable String name, @Validated(value = UpdateOrganization.class) @RequestBody OrganizationDTO organization) {
         return organizationService.updateOrganization(name, organization);
     }
 
     @DeleteMapping("/{name}")
-    Organization delete(@PathVariable String name) {
+    OrganizationDTO delete(@PathVariable String name) {
         return organizationService.deleteOrganization(name);
     }
 

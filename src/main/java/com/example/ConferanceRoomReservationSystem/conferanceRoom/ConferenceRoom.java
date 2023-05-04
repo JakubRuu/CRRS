@@ -7,41 +7,23 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.*;
 import java.util.Objects;
 
-interface AddConferenceRoom {
-
-}
-
-interface UpdateConferenceRoom {
-
-}
 
 @Entity
 public class ConferenceRoom {
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
+@Id
+@GeneratedValue(generator = "UUID")
+@GenericGenerator(
+        name = "UUID",
+        strategy = "org.hibernate.id.UUIDGenerator"
+)
     private String id;
-    @NotBlank(groups = AddConferenceRoom.class)
-    @Size(min = 2, max = 20, groups = {AddConferenceRoom.class, UpdateConferenceRoom.class})
     private String name;
-    @Size(min = 2, max = 20, groups = {AddConferenceRoom.class, UpdateConferenceRoom.class})
-
     private String identifier;
-
-    @Min(value = 0, groups = {AddConferenceRoom.class, UpdateConferenceRoom.class})
-    @Max(value = 10, groups = {AddConferenceRoom.class, UpdateConferenceRoom.class})
     private int level;
     private boolean isAvailable;
-    @NotNull(groups = AddConferenceRoom.class)
-    @PositiveOrZero(groups = {AddConferenceRoom.class, UpdateConferenceRoom.class})
     private int numOfSeats;
-
     @ManyToOne
     private Organization organization;
 
@@ -56,6 +38,15 @@ public class ConferenceRoom {
         this.isAvailable = isAvailable;
         this.numOfSeats = numOfSeats;
         this.organization = organization;
+    }
+
+    public ConferenceRoom(String id, String name, String identifier, int level, boolean isAvailable, int numOfSeats) {
+        this.id = id;
+        this.name = name;
+        this.identifier = identifier;
+        this.level = level;
+        this.isAvailable = isAvailable;
+        this.numOfSeats = numOfSeats;
     }
 
     public ConferenceRoom(String name, String identifier, int level, boolean isAvailable, int numOfSeats, Organization organization) {

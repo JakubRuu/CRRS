@@ -5,9 +5,10 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 
 import java.util.Arrays;
+import java.util.Set;
 import java.util.stream.Stream;
 
-public class ValidationAddOrganizationArgumentProvider implements ArgumentsProvider {
+public class  ValidationAddOrganizationArgumentProvider implements ArgumentsProvider {
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) throws Exception {
         return Stream.of(
@@ -18,7 +19,7 @@ public class ValidationAddOrganizationArgumentProvider implements ArgumentsProvi
                                   "name": "I"
                                 }
                                 """,
-                        Arrays.asList("size must be between 2 and 20")
+                        new String[]{"size must be between 2 and 20"}
                 ),
                 Arguments.of(
                         """
@@ -27,7 +28,7 @@ public class ValidationAddOrganizationArgumentProvider implements ArgumentsProvi
                                   "name": " "
                                 }
                                 """,
-                        Arrays.asList("size must be between 2 and 20", "must not be blank")
+                     new String[]{"size must be between 2 and 20", "must not be blank"}
                 ),
                 Arguments.of(
                         """
@@ -35,7 +36,7 @@ public class ValidationAddOrganizationArgumentProvider implements ArgumentsProvi
                                   "description": "IT company"
                                 }
                                 """,
-                        Arrays.asList("must not be blank")
+                       new String[] {"must not be blank"}
                 )
         );
     }

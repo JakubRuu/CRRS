@@ -3,10 +3,12 @@ package com.example.ConferanceRoomReservationSystem.conferanceRoom;
 import com.example.ConferanceRoomReservationSystem.organization.Organization;
 import com.example.ConferanceRoomReservationSystem.organization.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 class ConferenceRoomService {
@@ -26,13 +28,15 @@ class ConferenceRoomService {
         this.conferenceRoomTransformer=conferenceRoomTransformer;
     }
 
-    List<ConferenceRoom> getAllConferenceRooms() {
-        return conferenceRoomRepository.findAll();
+    List<ConferenceRoomDTO> getAllConferenceRooms() {
+        return conferenceRoomRepository.findAll().stream()
+                .map(conferenceRoomTransformer::toDto)
+                .collect(Collectors.toList());
     }
 
-    ConferenceRoomDTO addConferenceRoom(ConferenceRoom conferenceRoom) {
-        String organizationName = conferenceRoom.getOrganization().getName();
-        Organization organizationFromRepo = organizationRepository.findByName(organizationName)
+    ConferenceRoomDTO addConferenceRoom(ConferenceRoomDTO conferenceRoomDTO) {
+        ConferenceRoom conferenceRoom= conferenceRoomTransformer.fromDto(conferenceRoomDTO);
+        Organization organizationFromRepo = organizationRepository.findByName(conferenceRoom.getOrganization().getName())
                 .orElseThrow(() -> {
                     throw new NoSuchElementException();
                 });
@@ -44,14 +48,16 @@ class ConferenceRoomService {
         return conferenceRoomTransformer.toDto(conferenceRoomRepository.save(conferenceRoom));
     }
 
-    ConferenceRoom deleteConferenceRoom(String id) {
+    ConferenceRoomDTO deleteConferenceRoom(String id) {
         ConferenceRoom conferenceRoom = conferenceRoomRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No conference room found!"));
         conferenceRoomRepository.deleteById(id);
-        return conferenceRoom;
+        return conferenceRoomTransformer.toDto(conferenceRoom);
     }
 
-    ConferenceRoom updateConferenceRoom(String id, ConferenceRoom conferenceRoom) {
-        return conferenceRoomUpdator.update(id, conferenceRoom);
+    ConferenceRoomDTO updateConferenceRoom(String id, ConferenceRoomDTO conferenceRoom) {
+        return conferenceRoomTransformer.toDto(
+                conferenceRoomUpdator.update(id, conferenceRoomTransformer.fromDto(conferenceRoom))
+        );
     }
 }

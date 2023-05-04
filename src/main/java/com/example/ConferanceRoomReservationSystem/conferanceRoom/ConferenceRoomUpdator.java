@@ -20,21 +20,21 @@ public class ConferenceRoomUpdator {
         ConferenceRoom conferenceRoomToUpdate = conferenceRoomRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No conference room to update found!"));
 
-        boolean isNameUpdated= updateName(conferenceRoomToUpdate, conferenceRoom);
+        boolean isNameUpdated = updateName(conferenceRoomToUpdate, conferenceRoom);
         updateAvailability(conferenceRoomToUpdate, conferenceRoom);
         updateIdentifier(conferenceRoomToUpdate, conferenceRoom);
         updateNumberOfSeats(conferenceRoomToUpdate, conferenceRoom);
         updateLevel(conferenceRoomToUpdate, conferenceRoom);
-       boolean isOrganizationUpdated= updateOrganization(conferenceRoomToUpdate, conferenceRoom);
-        checkIfConferenceRoomIsunique(conferenceRoomToUpdate,isOrganizationUpdated,isNameUpdated);
+        boolean isOrganizationUpdated = updateOrganization(conferenceRoomToUpdate, conferenceRoom);
+        checkIfConferenceRoomIsunique(conferenceRoomToUpdate, isOrganizationUpdated, isNameUpdated);
         return conferenceRoomRepository.save(conferenceRoomToUpdate);
     }
 
     private void checkIfConferenceRoomIsunique(ConferenceRoom conferenceRoomToUpdate,
-                                               boolean isOrganizationUpdated ,
+                                               boolean isOrganizationUpdated,
                                                boolean isNameUpdated) {
 
-        if (!isNameUpdated && !isOrganizationUpdated){
+        if (!isNameUpdated && !isOrganizationUpdated) {
             return;
         }
         conferenceRoomRepository.findByNameAndOrganization_Name(
@@ -49,7 +49,7 @@ public class ConferenceRoomUpdator {
         String name = conferenceRoom.getName();
         if (conferenceRoom.getName() != null) {
             conferenceRoomToUpdate.setName(name);
-             return true;
+            return true;
         }
         return false;
     }
@@ -86,10 +86,10 @@ public class ConferenceRoomUpdator {
     private boolean updateOrganization(ConferenceRoom conferenceRoomToUpdate, ConferenceRoom conferenceRoom) {
         Organization organization = conferenceRoom.getOrganization();
         if (organization != null) {
-          Organization organizationFromRepo=  organizationRepository.findByName(organization.getName())
+            Organization organizationFromRepo = organizationRepository.findByName(organization.getName())
                     .orElseThrow(() -> new NoSuchElementException("No organization found!"));
             conferenceRoomToUpdate.setOrganization(organizationFromRepo);
-        return true;
+            return true;
         }
         return false;
     }
