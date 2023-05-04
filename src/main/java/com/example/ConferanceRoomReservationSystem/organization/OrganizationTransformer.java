@@ -1,10 +1,10 @@
 package com.example.ConferanceRoomReservationSystem.organization;
 
 import com.example.ConferanceRoomReservationSystem.conferanceRoom.ConferenceRoomTransformer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
+
 @Component
 class OrganizationTransformer {
     private final ConferenceRoomTransformer conferenceRoomTransformer;
@@ -24,7 +24,7 @@ class OrganizationTransformer {
         );
     }
 
-    Organization fromDto(OrganizationDTO organizationDTO){
+    Organization fromDto(OrganizationDTO organizationDTO) {
         return new Organization(
                 organizationDTO.getId(),
                 organizationDTO.getName(),

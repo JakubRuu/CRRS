@@ -9,21 +9,32 @@ import java.util.List;
 @RequestMapping("/conferencerooms")
 class ConferenceRoomController {
 
+    private final ConferenceRoomService conferenceRoomService;
     private String id;
     private String name;
     private String identifier;
-    private int level;
-    private boolean isAvailable;
-    private int numOfSeats;
-    private final ConferenceRoomService conferenceRoomService;
+    private Integer level;
+    private Boolean isAvailable;
+    private Integer numOfSeats;
 
     public ConferenceRoomController(ConferenceRoomService conferenceRoomService) {
         this.conferenceRoomService = conferenceRoomService;
     }
 
     @GetMapping
-    List<ConferenceRoomDTO> getAll() {
-        return conferenceRoomService.getAllConferenceRooms();
+    List<ConferenceRoomDTO> getAll(
+            @RequestParam(required = false) String identifier,
+            @RequestParam(required = false) Integer level,
+            @RequestParam(required = false) String organizationName,
+            @RequestParam(required = false) boolean isAvailable,
+            @RequestParam(required = false) Integer numOfSeats
+    ) {
+        return conferenceRoomService.getConferenceRoomBy(identifier,level, isAvailable, numOfSeats, organizationName);
+    }
+
+    @GetMapping("/{id}")
+    ConferenceRoomDTO getById(String id) {
+        return conferenceRoomService.getConferenceRoomById(id);
     }
 
     @PostMapping
@@ -37,7 +48,7 @@ class ConferenceRoomController {
     }
 
     @PutMapping("/{id}")
-    ConferenceRoomDTO update(@PathVariable String id, @Validated (UpdateConferenceRoom.class) @RequestBody ConferenceRoomDTO conferenceRoom) {
+    ConferenceRoomDTO update(@PathVariable String id, @Validated(UpdateConferenceRoom.class) @RequestBody ConferenceRoomDTO conferenceRoom) {
         return conferenceRoomService.updateConferenceRoom(id, conferenceRoom);
     }
 

@@ -1,13 +1,12 @@
 package com.example.ConferanceRoomReservationSystem.conferanceRoom;
 
 import com.example.ConferanceRoomReservationSystem.organization.Organization;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
- public class ConferenceRoomTransformer {
-    public ConferenceRoomDTO toDto(ConferenceRoom conferenceRoom){
-        return  new ConferenceRoomDTO(
+public class ConferenceRoomTransformer {
+    public ConferenceRoomDTO toDto(ConferenceRoom conferenceRoom) {
+        return new ConferenceRoomDTO(
                 conferenceRoom.getId(),
                 conferenceRoom.getName(),
                 conferenceRoom.getIdentifier(),
@@ -17,8 +16,9 @@ import org.springframework.stereotype.Component;
                 conferenceRoom.getOrganization().getName()
         );
     }
-public ConferenceRoom fromDto(ConferenceRoomDTO conferenceRoomDTO){
-        return  new ConferenceRoom(
+
+    public ConferenceRoom fromDto(ConferenceRoomDTO conferenceRoomDTO) {
+        return new ConferenceRoom(
                 conferenceRoomDTO.getId(),
                 conferenceRoomDTO.getName(),
                 conferenceRoomDTO.getIdentifier(),
@@ -26,6 +26,6 @@ public ConferenceRoom fromDto(ConferenceRoomDTO conferenceRoomDTO){
                 conferenceRoomDTO.isAvailable(),
                 conferenceRoomDTO.getNumOfSeats(),
                 new Organization(conferenceRoomDTO.getOrganization())
-                );
+        );
     }
 }

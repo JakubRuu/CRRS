@@ -12,25 +12,26 @@ import java.util.Objects;
 
 @Entity
 public class ConferenceRoom {
-@Id
-@GeneratedValue(generator = "UUID")
-@GenericGenerator(
-        name = "UUID",
-        strategy = "org.hibernate.id.UUIDGenerator"
-)
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     private String id;
     private String name;
     private String identifier;
-    private int level;
+    private Integer level;
     private boolean isAvailable;
-    private int numOfSeats;
+    private Integer numOfSeats;
     @ManyToOne
     private Organization organization;
 
     ConferenceRoom() {
     }
 
-    public ConferenceRoom(String id, String name, String identifier, int level, boolean isAvailable, int numOfSeats, Organization organization) {
+    public ConferenceRoom(String id, String name, String identifier, Integer level, boolean isAvailable,
+                          Integer numOfSeats, Organization organization) {
         this.id = id;
         this.name = name;
         this.identifier = identifier;
@@ -40,7 +41,7 @@ public class ConferenceRoom {
         this.organization = organization;
     }
 
-    public ConferenceRoom(String id, String name, String identifier, int level, boolean isAvailable, int numOfSeats) {
+    public ConferenceRoom(String id, String name, String identifier, Integer level, boolean isAvailable, Integer numOfSeats) {
         this.id = id;
         this.name = name;
         this.identifier = identifier;
@@ -49,7 +50,7 @@ public class ConferenceRoom {
         this.numOfSeats = numOfSeats;
     }
 
-    public ConferenceRoom(String name, String identifier, int level, boolean isAvailable, int numOfSeats, Organization organization) {
+    public ConferenceRoom(String name, String identifier, Integer level, boolean isAvailable, Integer numOfSeats, Organization organization) {
         this.name = name;
         this.identifier = identifier;
         this.level = level;
@@ -82,11 +83,11 @@ public class ConferenceRoom {
         this.identifier = identifier;
     }
 
-    public int getLevel() {
+    public Integer getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(Integer level) {
         this.level = level;
     }
 
@@ -98,11 +99,11 @@ public class ConferenceRoom {
         isAvailable = available;
     }
 
-    public int getNumOfSeats() {
+    public Integer getNumOfSeats() {
         return numOfSeats;
     }
 
-    public void setNumOfSeats(int numOfSeats) {
+    public void setNumOfSeats(Integer numOfSeats) {
         this.numOfSeats = numOfSeats;
     }
 

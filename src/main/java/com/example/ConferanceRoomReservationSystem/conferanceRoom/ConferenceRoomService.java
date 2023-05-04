@@ -3,7 +3,8 @@ package com.example.ConferanceRoomReservationSystem.conferanceRoom;
 import com.example.ConferanceRoomReservationSystem.organization.Organization;
 import com.example.ConferanceRoomReservationSystem.organization.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +26,7 @@ class ConferenceRoomService {
         this.conferenceRoomRepository = conferenceRoomRepository;
         this.organizationRepository = organizationRepository;
         this.conferenceRoomUpdator = conferenceRoomUpdator;
-        this.conferenceRoomTransformer=conferenceRoomTransformer;
+        this.conferenceRoomTransformer = conferenceRoomTransformer;
     }
 
     List<ConferenceRoomDTO> getAllConferenceRooms() {
@@ -34,8 +35,38 @@ class ConferenceRoomService {
                 .collect(Collectors.toList());
     }
 
+    ConferenceRoomDTO getConferenceRoomById(String id) {
+        return conferenceRoomRepository.findById(id)
+                .map(conferenceRoomTransformer::toDto)
+                .orElseThrow(() -> {
+                    throw new NoSuchElementException("No conference room found!");
+                });
+    }
+
+    List<ConferenceRoomDTO> getConferenceRoomBy(
+            String identifier,
+            Integer level,
+            boolean isAvailable,
+            Integer numOfSeats,
+            String organizationName
+            ) {
+        ExampleMatcher exampleMatcher = ExampleMatcher.matching().withIgnoreNullValues();
+        Example<ConferenceRoom> conferenceRoomExample = Example.of(
+                new ConferenceRoom(null,
+                        identifier,
+                        level,
+                        isAvailable,
+                        numOfSeats,
+                        new Organization(organizationName))
+                ,exampleMatcher
+        );
+        return conferenceRoomRepository.findAll(conferenceRoomExample).stream()
+                .map(conferenceRoomTransformer::toDto)
+                .collect(Collectors.toList());
+    }
+
     ConferenceRoomDTO addConferenceRoom(ConferenceRoomDTO conferenceRoomDTO) {
-        ConferenceRoom conferenceRoom= conferenceRoomTransformer.fromDto(conferenceRoomDTO);
+        ConferenceRoom conferenceRoom = conferenceRoomTransformer.fromDto(conferenceRoomDTO);
         Organization organizationFromRepo = organizationRepository.findByName(conferenceRoom.getOrganization().getName())
                 .orElseThrow(() -> {
                     throw new NoSuchElementException();

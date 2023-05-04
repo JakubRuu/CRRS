@@ -77,7 +77,7 @@ public class ConferenceRoomUpdator {
     }
 
     private void updateLevel(ConferenceRoom conferenceRoomToUpdate, ConferenceRoom conferenceRoom) {
-        int level = conferenceRoom.getLevel();
+        Integer level = conferenceRoom.getLevel();
         if (level != 0) {
             conferenceRoomToUpdate.setLevel(level);
         }
