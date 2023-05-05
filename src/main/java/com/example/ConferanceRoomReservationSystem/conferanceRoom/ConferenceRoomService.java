@@ -49,7 +49,7 @@ class ConferenceRoomService {
             boolean isAvailable,
             Integer numOfSeats,
             String organizationName
-            ) {
+    ) {
         ExampleMatcher exampleMatcher = ExampleMatcher.matching().withIgnoreNullValues();
         Example<ConferenceRoom> conferenceRoomExample = Example.of(
                 new ConferenceRoom(null,
@@ -58,7 +58,7 @@ class ConferenceRoomService {
                         isAvailable,
                         numOfSeats,
                         new Organization(organizationName))
-                ,exampleMatcher
+                , exampleMatcher
         );
         return conferenceRoomRepository.findAll(conferenceRoomExample).stream()
                 .map(conferenceRoomTransformer::toDto)

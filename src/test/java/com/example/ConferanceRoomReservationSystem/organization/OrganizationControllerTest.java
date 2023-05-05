@@ -22,9 +22,11 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.NoSuchElementException;
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 
@@ -137,7 +139,7 @@ class OrganizationControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code", equalTo(400)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message", equalTo("Bad Request")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.details.name[0]", equalTo("size must be between 2 and 20")));;
+                .andExpect(MockMvcResultMatchers.jsonPath("$.details.name[0]", equalTo("size must be between 2 and 20")));
     }
 
     @ParameterizedTest
@@ -153,7 +155,7 @@ class OrganizationControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code", equalTo(400)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message", equalTo("Bad Request")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.details.name").value(containsInAnyOrder(arg2)));;
+                .andExpect(MockMvcResultMatchers.jsonPath("$.details.name").value(containsInAnyOrder(arg2)));
     }
 
     @Test
@@ -261,7 +263,7 @@ class OrganizationControllerTest {
 
     @ParameterizedTest
     @ArgumentsSource(ValidationUpdateOrganizationArgumentProvider.class)
-    void when_update_organization_arg1_then_validation_should_happen(String arg1, boolean result,List<String> arg2) throws Exception {
+    void when_update_organization_arg1_then_validation_should_happen(String arg1, boolean result, List<String> arg2) throws Exception {
         //given
         String existingOrgName = "Tietio";
         //when

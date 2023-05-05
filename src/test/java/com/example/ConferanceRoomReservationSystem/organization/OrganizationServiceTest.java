@@ -101,7 +101,7 @@ class OrganizationServiceTest {
         String name = "Intive";
         Long id = 1L;
         Organization arg = new Organization(id, name, "IT company");
-        OrganizationDTO argDto= new OrganizationDTO(id,name,"IT company");
+        OrganizationDTO argDto = new OrganizationDTO(id, name, "IT company");
         Mockito.when(organizationRepository.findByName(name)).thenReturn(Optional.of(arg));
         Mockito.when(organizationTransformer.toDto(arg)).thenReturn(argDto);
         //when
@@ -153,7 +153,6 @@ class OrganizationServiceTest {
         assertEquals(argDto, result);
         Mockito.verify(organizationRepository).findByName(name);
     }
-
 
 
     @ParameterizedTest

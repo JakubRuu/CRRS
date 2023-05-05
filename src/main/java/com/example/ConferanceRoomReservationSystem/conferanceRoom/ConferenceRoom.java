@@ -1,12 +1,11 @@
 package com.example.ConferanceRoomReservationSystem.conferanceRoom;
 
 import com.example.ConferanceRoomReservationSystem.organization.Organization;
+import com.example.ConferanceRoomReservationSystem.reservation.Reservation;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -26,8 +25,28 @@ public class ConferenceRoom {
     private Integer numOfSeats;
     @ManyToOne
     private Organization organization;
+    @OneToMany(mappedBy = "conferenceRoom")
+    private List<Reservation> reservations;
 
     ConferenceRoom() {
+    }
+
+    public ConferenceRoom(String id) {
+        this.id = id;
+    }
+
+    public ConferenceRoom(String id, String name, String identifier, Integer level
+            , boolean isAvailable, Integer numOfSeats
+            , Organization organization
+            , List<Reservation> reservations) {
+        this.id = id;
+        this.name = name;
+        this.identifier = identifier;
+        this.level = level;
+        this.isAvailable = isAvailable;
+        this.numOfSeats = numOfSeats;
+        this.organization = organization;
+        this.reservations = reservations;
     }
 
     public ConferenceRoom(String id, String name, String identifier, Integer level, boolean isAvailable,
@@ -115,18 +134,25 @@ public class ConferenceRoom {
         this.organization = organization;
     }
 
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ConferenceRoom that = (ConferenceRoom) o;
-        return level == that.level && isAvailable == that.isAvailable && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(identifier, that.identifier) && Objects.equals(numOfSeats, that.numOfSeats) && Objects.equals(organization, that.organization);
+        return isAvailable == that.isAvailable && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(identifier, that.identifier) && Objects.equals(level, that.level) && Objects.equals(numOfSeats, that.numOfSeats) && Objects.equals(organization, that.organization) && Objects.equals(reservations, that.reservations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, identifier, level, isAvailable, numOfSeats, organization);
+        return Objects.hash(id, name, identifier, level, isAvailable, numOfSeats, organization, reservations);
     }
 
     @Override
@@ -139,6 +165,7 @@ public class ConferenceRoom {
                 ", isAvailable=" + isAvailable +
                 ", numOfSeats=" + numOfSeats +
                 ", organization=" + organization +
+                ", reservations=" + reservations +
                 '}';
     }
 }

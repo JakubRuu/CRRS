@@ -29,7 +29,7 @@ class ConferenceRoomController {
             @RequestParam(required = false) boolean isAvailable,
             @RequestParam(required = false) Integer numOfSeats
     ) {
-        return conferenceRoomService.getConferenceRoomBy(identifier,level, isAvailable, numOfSeats, organizationName);
+        return conferenceRoomService.getConferenceRoomBy(identifier, level, isAvailable, numOfSeats, organizationName);
     }
 
     @GetMapping("/{id}")

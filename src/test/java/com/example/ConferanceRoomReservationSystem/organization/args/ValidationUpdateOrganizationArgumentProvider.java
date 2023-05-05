@@ -5,6 +5,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class ValidationUpdateOrganizationArgumentProvider implements ArgumentsProvider {
@@ -19,7 +20,7 @@ public class ValidationUpdateOrganizationArgumentProvider implements ArgumentsPr
                                 }
                                 """,
                         false,
-                        Arrays.asList("size must be between 2 and 20")
+                        List.of("size must be between 2 and 20")
                 ),
                 Arguments.of(
                         """
@@ -29,7 +30,7 @@ public class ValidationUpdateOrganizationArgumentProvider implements ArgumentsPr
                                 }
                                 """,
                         false,
-                        Arrays.asList("size must be between 2 and 20")
+                        List.of("size must be between 2 and 20")
                 ),
                 Arguments.of(
                         """
@@ -38,7 +39,7 @@ public class ValidationUpdateOrganizationArgumentProvider implements ArgumentsPr
                                 }
                                 """,
                         true,
-                       Arrays.asList("")
+                        List.of("")
                 )
         );
     }
